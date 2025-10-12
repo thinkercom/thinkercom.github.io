@@ -1119,7 +1119,7 @@ ul li {
     }
 }
 
-#toolbox {
+/* #toolbox {
     position: fixed;
     right: 20px;
     bottom: 20px;
@@ -1159,4 +1159,4 @@ ul li {
 .pomo-timer {
     font-size: 24px;
     margin: 5px 0;
-}
+} */
