@@ -153,7 +153,7 @@
                         </a>
                     </div>
                 </transition>
-            </nav>
+            </nav>            
         </div>
         <!-- 菜单幕布，用于移动端点击关闭菜单 -->
         <transition name="fade">
@@ -322,15 +322,120 @@
                 <img id="preview-content" ref="previewContent">
             </div>
         </transition>
+        <!-- 工具面板-新增 -->
+        <div id="toolbox" v-cloak>
+            <div id="toolbox-btn" @click="showToolbox = !showToolbox">
+                <i class="fa-solid fa-toolbox"></i>
+            </div>
+
+            <transition name="fade">
+                <div id="toolbox-panel" v-show="showToolbox">
+                    <h3>生活工具箱</h3>
+
+                    <!-- 番茄钟 -->
+                    <div class="tool-section">
+                        <h4>番茄钟</h4>
+                        <div>
+                            <input v-model="pomoTask" placeholder="任务名称">
+                            <div class="pomo-timer">{{ pomoTimeDisplay }}</div>
+                            <button @click="startPomodoro">开始</button>
+                            <button @click="stopPomodoro">停止</button>
+                        </div>
+                    </div>
+
+                    <!-- 待办列表 -->
+                    <div class="tool-section">
+                        <h4>备忘录</h4>
+                        <div>
+                            <input v-model="newTodo" placeholder="添加任务..." @keyup.enter="addTodo">
+                            <ul>
+                                <li v-for="(todo, index) in todos" :key="index">
+                                    <input type="checkbox" v-model="todo.done">
+                                    <span :class="{done: todo.done}">{{ todo.text }}</span>
+                                    <i class="fa-solid fa-trash" @click="removeTodo(index)"></i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 课程表 -->
+                    <div class="tool-section">
+                        <h4>今日课表</h4>
+                        <ul>
+                            <li v-for="(course, index) in todayCourses" :key="index">
+                                {{ course.time }} - {{ course.name }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </transition>
+        </div>
     </div>
     <!-- 主要JavaScript文件 -->
+    <!-- 主脚本 -->
     <script src="/js/main.js"></script>
+
+    <!-- 新增功能脚本区域 -->
+    <script src="/js/pomodoro.js"></script> <!-- 番茄时钟 -->
+    <script src="/js/timetable.js"></script> <!-- 课表 -->
+    <script src="/js/todo.js"></script> <!-- 备忘录/待办 -->
+
     <!-- 烟花特效（仅在非触摸设备上显示） -->
     <script>
-        if(console.log("Welcome to Thinkercom's blog!"), !window.hasOwnProperty("ontouchstart")) {
-            let t = '<canvas id="fireworks" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"></canvas><script src="https:\/\/static-argvchs.netlify.app\/js\/fireworks.min.js"><\/script>';
-            document.body.append(document.createRange().createContextualFragment(t))
+        console.log("Welcome to Thinkercom's blog!");
+
+        // 加载烟花特效
+        if (!window.hasOwnProperty("ontouchstart")) {
+            let t = `
+                <canvas id="fireworks" style="position: fixed; top: 0; left: 0; 
+                width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"></canvas>
+                <script src="https://static-argvchs.netlify.app/js/fireworks.min.js"><\/script>
+            `;
+            document.body.append(document.createRange().createContextualFragment(t));
         }
+
+        // === 加载自定义功能组件 ===
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1️⃣ 创建浮动功能按钮
+            const tools = document.createElement("div");
+            tools.id = "site-tools";
+            tools.innerHTML = `
+                <div class="tool-btn" id="pomodoro-btn" title="番茄时钟 🍅"><i class="fa-solid fa-clock"></i></div>
+                <div class="tool-btn" id="timetable-btn" title="课表 🗓️"><i class="fa-solid fa-calendar-days"></i></div>
+                <div class="tool-btn" id="todo-btn" title="待办清单 📝"><i class="fa-solid fa-list-check"></i></div>
+            `;
+            document.body.appendChild(tools);
+        });
     </script>
+
+    <!-- 基础样式 -->
+    <style>
+        #site-tools {
+            position: fixed;
+            right: 20px;
+            bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 99999;
+        }
+        .tool-btn {
+            background: #2b2b2b;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tool-btn:hover {
+            background: #ff7d73;
+            transform: scale(1.1);
+        }
+    </style>
 </body>
 </html>
