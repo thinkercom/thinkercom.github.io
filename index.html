@@ -164,7 +164,7 @@
             <!-- 首页头部 -->
             <div id="home-head">
                 <!-- 首页背景图片-可修改 -->
-                <div id="home-background" ref="homeBackground" data-images="https://i.imgur.com/5sBySSU.jpeg"></div>
+                <div id="home-background" ref="homeBackground" data-images="https://i.imgur.com/5sBySSU.jpeg" data-mobile-images="https://i.imgur.com/ZbEsxYd.jpeg"></div>
                 <!-- 首页信息 -->
                 <div id="home-info" @click="homeClick">
                     <span class="loop"></span>
@@ -370,102 +370,104 @@
         </div>
     </transition>
 </div>
-<
     <!-- 主要JavaScript文件 -->
-    <!-- 主脚本 -->
     <script src="/js/main.js"></script>
     <!-- 1014-4 new add -->
     <script>
-        const app = Vue.createApp({
-            data() {
-                return {
-                    showToolbox: false,      // 是否展开底部工具箱
-                    activeTab: 'todo',       // 当前激活的功能标签：todo / pomo / course
+        document.addEventListener('DOMContentLoaded', () => {
+            const toolboxApp = Vue.createApp({
+                data() {
+                    return {
+                        showToolbox: false,
+                        activeTab: 'todo',
 
-                    // 番茄钟
-                    pomoTask: '',
-                    pomoTime: 25 * 60,
-                    pomoRunning: false,
-                    pomoTimer: null,
+                        // 番茄钟
+                        pomoTask: '',
+                        pomoTime: 25 * 60,
+                        pomoRunning: false,
+                        pomoTimer: null,
 
-                    // 待办
-                    newTodo: '',
-                    todos: JSON.parse(localStorage.getItem('todos') || '[]'),
+                        // 待办
+                        newTodo: '',
+                        todos: JSON.parse(localStorage.getItem('todos') || '[]'),
 
-                    // 课表
-                    timetable: {
-                        'Monday': [
-                            { time: '08:00', name: '数学' },
-                            { time: '10:00', name: '英语' }
-                        ],
-                        'Tuesday': [
-                            { time: '09:00', name: '物理' },
-                            { time: '14:00', name: '计算机网络' }
-                        ]
+                        // 课表
+                        timetable: {
+                            'Monday': [
+                                { time: '08:00', name: '数学' },
+                                { time: '10:00', name: '英语' }
+                            ],
+                            'Tuesday': [
+                                { time: '09:00', name: '物理' },
+                                { time: '14:00', name: '计算机网络' }
+                            ]
+                        }
+                    }
+                },
+                computed: {
+                    pomoTimeDisplay() {
+                        const m = Math.floor(this.pomoTime / 60)
+                        const s = this.pomoTime % 60
+                        return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
+                    },
+                    todayCourses() {
+                        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+                        return this.timetable[days[new Date().getDay()]] || []
+                    }
+                },
+                methods: {
+                    // -------- 番茄钟 --------
+                    startPomodoro() {
+                        if (this.pomoRunning) return
+                        this.pomoRunning = true
+                        this.pomoTimer = setInterval(() => {
+                            if (this.pomoTime > 0) this.pomoTime--
+                            else {
+                                clearInterval(this.pomoTimer)
+                                alert(`🎉 ${this.pomoTask || '番茄时间'} 完成!`)
+                                this.pomoRunning = false
+                                this.pomoTime = 25 * 60
+                            }
+                        }, 1000)
+                    },
+                    stopPomodoro() {
+                        clearInterval(this.pomoTimer)
+                        this.pomoRunning = false
+                        this.pomoTime = 25 * 60
+                    },
+
+                    // -------- 待办 --------
+                    addTodo() {
+                        if (!this.newTodo.trim()) return
+                        this.todos.push({ text: this.newTodo.trim(), done: false })
+                        this.newTodo = ''
+                        this.saveTodos()
+                    },
+                    removeTodo(i) {
+                        this.todos.splice(i, 1)
+                        this.saveTodos()
+                    },
+                    saveTodos() {
+                        localStorage.setItem('todos', JSON.stringify(this.todos))
+                    },
+
+                    // -------- 标签切换 --------
+                    switchTab(tab) {
+                        this.activeTab = tab
+                    }
+                },
+                watch: {
+                    todos: {
+                        deep: true,
+                        handler() { this.saveTodos() }
                     }
                 }
-            },
-            computed: {
-                pomoTimeDisplay() {
-                    let m = Math.floor(this.pomoTime / 60)
-                    let s = this.pomoTime % 60
-                    return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`
-                },
-                todayCourses() {
-                    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
-                    return this.timetable[days[new Date().getDay()]] || []
-                }
-            },
-            methods: {
-                // -------- 番茄钟 --------
-                startPomodoro() {
-                    if(this.pomoRunning) return
-                    this.pomoRunning = true
-                    this.pomoTimer = setInterval(() => {
-                        if(this.pomoTime > 0) this.pomoTime--
-                        else {
-                            clearInterval(this.pomoTimer)
-                            alert(`🎉 ${this.pomoTask || '番茄时间'} 完成!`)
-                            this.pomoRunning = false
-                            this.pomoTime = 25 * 60
-                        }
-                    }, 1000)
-                },
-                stopPomodoro() {
-                    clearInterval(this.pomoTimer)
-                    this.pomoRunning = false
-                    this.pomoTime = 25 * 60
-                },
+            })
 
-                // -------- 待办 --------
-                addTodo() {
-                    if (!this.newTodo.trim()) return
-                    this.todos.push({ text: this.newTodo.trim(), done: false })
-                    this.newTodo = ''
-                    this.saveTodos()
-                },
-                removeTodo(i) {
-                    this.todos.splice(i, 1)
-                    this.saveTodos()
-                },
-                saveTodos() {
-                    localStorage.setItem('todos', JSON.stringify(this.todos))
-                },
-
-                // -------- 切换标签 --------
-                switchTab(tab) {
-                    this.activeTab = tab
-                }
-            },
-            watch: {
-                todos: {
-                    deep: true,
-                    handler() { this.saveTodos() }
-                }
-            }
+            toolboxApp.mount('#toolbox')
         })
-        app.mount('#layout')
     </script>
+
 
 
     <!-- 新增功能脚本区域 -->
