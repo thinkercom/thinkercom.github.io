@@ -471,18 +471,6 @@
             document.body.append(document.createRange().createContextualFragment(t));
         }
 
-        // === 加载自定义功能组件 ===
-        document.addEventListener("DOMContentLoaded", () => {
-            // 1️⃣ 创建浮动功能按钮,新增1014-2 
-            const tools = document.createElement("div");
-            tools.id = "site-tools";
-            tools.innerHTML = `
-                <div class="tool-btn" id="pomodoro-btn" title="番茄时钟 🍅"><i class="fa-solid fa-clock"></i></div>
-                <div class="tool-btn" id="timetable-btn" title="课表 🗓️"><i class="fa-solid fa-calendar-days"></i></div>
-                <div class="tool-btn" id="todo-btn" title="待办清单 📝"><i class="fa-solid fa-list-check"></i></div>
-            `;
-            document.body.appendChild(tools);
-        });
     </script>
 
     <!-- 基础样式 -->
