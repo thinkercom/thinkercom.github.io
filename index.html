@@ -324,133 +324,149 @@
         </transition>
         <!-- 工具面板-新增1014-aft -->
         <div id="toolbox" v-cloak>
-            <div id="toolbox-btn" @click="showToolbox = !showToolbox">
-                <i class="fa-solid fa-toolbox"></i>
+    <div id="toolbox-btn" @click="showToolbox = !showToolbox">
+        <i class="fa-solid fa-toolbox"></i>
+    </div>
+
+    <transition name="fade">
+        <div id="toolbox-panel" v-show="showToolbox">
+            <h3>生活工具箱</h3>
+
+            <!-- 标签切换 -->
+            <div class="tab-buttons">
+                <button :class="{active: activeTab === 'todo'}" @click="switchTab('todo')">备忘录</button>
+                <button :class="{active: activeTab === 'pomo'}" @click="switchTab('pomo')">番茄钟</button>
+                <button :class="{active: activeTab === 'course'}" @click="switchTab('course')">课表</button>
             </div>
 
-            <transition name="fade">
-                <div id="toolbox-panel" v-show="showToolbox">
-                    <h3>生活工具箱</h3>
+            <!-- 番茄钟 -->
+            <div v-show="activeTab === 'pomo'" class="tool-section">
+                <input v-model="pomoTask" placeholder="任务名称">
+                <div class="pomo-timer">{{ pomoTimeDisplay }}</div>
+                <button @click="startPomodoro">开始</button>
+                <button @click="stopPomodoro">停止</button>
+            </div>
 
-                    <!-- 番茄钟 -->
-                    <div class="tool-section">
-                        <h4>番茄钟</h4>
-                        <div>
-                            <input v-model="pomoTask" placeholder="任务名称">
-                            <div class="pomo-timer">{{ pomoTimeDisplay }}</div>
-                            <button @click="startPomodoro">开始</button>
-                            <button @click="stopPomodoro">停止</button>
-                        </div>
-                    </div>
+            <!-- 待办列表 -->
+            <div v-show="activeTab === 'todo'" class="tool-section">
+                <input v-model="newTodo" placeholder="添加任务..." @keyup.enter="addTodo">
+                <ul>
+                    <li v-for="(todo, index) in todos" :key="index">
+                        <input type="checkbox" v-model="todo.done">
+                        <span :class="{done: todo.done}">{{ todo.text }}</span>
+                        <i class="fa-solid fa-trash" @click="removeTodo(index)"></i>
+                    </li>
+                </ul>
+            </div>
 
-                    <!-- 待办列表 -->
-                    <div class="tool-section">
-                        <h4>备忘录</h4>
-                        <div>
-                            <input v-model="newTodo" placeholder="添加任务..." @keyup.enter="addTodo">
-                            <ul>
-                                <li v-for="(todo, index) in todos" :key="index">
-                                    <input type="checkbox" v-model="todo.done">
-                                    <span :class="{done: todo.done}">{{ todo.text }}</span>
-                                    <i class="fa-solid fa-trash" @click="removeTodo(index)"></i>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- 课程表 -->
-                    <div class="tool-section">
-                        <h4>今日课表</h4>
-                        <ul>
-                            <li v-for="(course, index) in todayCourses" :key="index">
-                                {{ course.time }} - {{ course.name }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </transition>
+            <!-- 课表 -->
+            <div v-show="activeTab === 'course'" class="tool-section">
+                <ul>
+                    <li v-for="(course, index) in todayCourses" :key="index">
+                        {{ course.time }} - {{ course.name }}
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
+    </transition>
+</div>
+<
     <!-- 主要JavaScript文件 -->
     <!-- 主脚本 -->
     <script src="/js/main.js"></script>
-    <!-- 新增 -->
-        <script>
-            const app = Vue.createApp({
-                data() {
-                    return {
-                        showToolbox: false,
-                        pomoTask: '',
-                        pomoTime: 25 * 60,
-                        pomoRunning: false,
-                        pomoTimer: null,
-                        newTodo: '',
-                        todos: JSON.parse(localStorage.getItem('todos') || '[]'),
-                        timetable: {
-                            'Monday': [
-                                { time: '08:00', name: '数学' },
-                                { time: '10:00', name: '英语' }
-                            ],
-                            'Tuesday': [
-                                { time: '09:00', name: '物理' },
-                                { time: '14:00', name: '计算机网络' }
-                            ]
-                        }
-                    }
-                },
-                computed: {
-                    pomoTimeDisplay() {
-                        let m = Math.floor(this.pomoTime / 60)
-                        let s = this.pomoTime % 60
-                        return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`
-                    },
-                    todayCourses() {
-                        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
-                        return this.timetable[days[new Date().getDay()]] || []
-                    }
-                },
-                methods: {
-                    startPomodoro() {
-                        if(this.pomoRunning) return
-                        this.pomoRunning = true
-                        this.pomoTimer = setInterval(() => {
-                            if(this.pomoTime > 0) this.pomoTime--
-                            else {
-                                clearInterval(this.pomoTimer)
-                                alert(`🎉 ${this.pomoTask || '番茄时间'} 完成!`)
-                                this.pomoRunning = false
-                                this.pomoTime = 25 * 60
-                            }
-                        }, 1000)
-                    },
-                    stopPomodoro() {
-                        clearInterval(this.pomoTimer)
-                        this.pomoRunning = false
-                        this.pomoTime = 25 * 60
-                    },
-                    addTodo() {
-                        if (!this.newTodo.trim()) return
-                        this.todos.push({ text: this.newTodo.trim(), done: false })
-                        this.newTodo = ''
-                        this.saveTodos()
-                    },
-                    removeTodo(i) {
-                        this.todos.splice(i, 1)
-                        this.saveTodos()
-                    },
-                    saveTodos() {
-                        localStorage.setItem('todos', JSON.stringify(this.todos))
-                    }
-                },
-                watch: {
-                    todos: {
-                        deep: true,
-                        handler() { this.saveTodos() }
+    <!-- 1014-4 new add -->
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    showToolbox: false,      // 是否展开底部工具箱
+                    activeTab: 'todo',       // 当前激活的功能标签：todo / pomo / course
+
+                    // 番茄钟
+                    pomoTask: '',
+                    pomoTime: 25 * 60,
+                    pomoRunning: false,
+                    pomoTimer: null,
+
+                    // 待办
+                    newTodo: '',
+                    todos: JSON.parse(localStorage.getItem('todos') || '[]'),
+
+                    // 课表
+                    timetable: {
+                        'Monday': [
+                            { time: '08:00', name: '数学' },
+                            { time: '10:00', name: '英语' }
+                        ],
+                        'Tuesday': [
+                            { time: '09:00', name: '物理' },
+                            { time: '14:00', name: '计算机网络' }
+                        ]
                     }
                 }
-            })
-            app.mount('#layout')
-        </script>
+            },
+            computed: {
+                pomoTimeDisplay() {
+                    let m = Math.floor(this.pomoTime / 60)
+                    let s = this.pomoTime % 60
+                    return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`
+                },
+                todayCourses() {
+                    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+                    return this.timetable[days[new Date().getDay()]] || []
+                }
+            },
+            methods: {
+                // -------- 番茄钟 --------
+                startPomodoro() {
+                    if(this.pomoRunning) return
+                    this.pomoRunning = true
+                    this.pomoTimer = setInterval(() => {
+                        if(this.pomoTime > 0) this.pomoTime--
+                        else {
+                            clearInterval(this.pomoTimer)
+                            alert(`🎉 ${this.pomoTask || '番茄时间'} 完成!`)
+                            this.pomoRunning = false
+                            this.pomoTime = 25 * 60
+                        }
+                    }, 1000)
+                },
+                stopPomodoro() {
+                    clearInterval(this.pomoTimer)
+                    this.pomoRunning = false
+                    this.pomoTime = 25 * 60
+                },
+
+                // -------- 待办 --------
+                addTodo() {
+                    if (!this.newTodo.trim()) return
+                    this.todos.push({ text: this.newTodo.trim(), done: false })
+                    this.newTodo = ''
+                    this.saveTodos()
+                },
+                removeTodo(i) {
+                    this.todos.splice(i, 1)
+                    this.saveTodos()
+                },
+                saveTodos() {
+                    localStorage.setItem('todos', JSON.stringify(this.todos))
+                },
+
+                // -------- 切换标签 --------
+                switchTab(tab) {
+                    this.activeTab = tab
+                }
+            },
+            watch: {
+                todos: {
+                    deep: true,
+                    handler() { this.saveTodos() }
+                }
+            }
+        })
+        app.mount('#layout')
+    </script>
+
 
     <!-- 新增功能脚本区域 -->
     <script src="/js/pomodoro.js"></script> <!-- 番茄时钟 -->
@@ -461,7 +477,7 @@
     <script>
         console.log("Welcome to Thinkercom's blog!");
 
-        <!-- 加载烟花特效 -->
+        // 加载烟花特效
         if (!window.hasOwnProperty("ontouchstart")) {
             let t = `
                 <canvas id="fireworks" style="position: fixed; top: 0; left: 0; 

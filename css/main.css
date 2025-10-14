@@ -1119,7 +1119,7 @@ ul li {
     }
 }
 
-#toolbox {
+/* #toolbox {
     position: fixed;
     right: 20px;
     bottom: 20px;
@@ -1159,4 +1159,71 @@ ul li {
 .pomo-timer {
     font-size: 24px;
     margin: 5px 0;
+} */
+/* 1014-4 new add */
+#toolbox {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000;
+}
+#toolbox-btn {
+    background: #0078d7;
+    color: #fff;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+#toolbox-panel {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    width: 260px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    padding: 15px;
+}
+.tab-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+.tab-buttons button {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.tab-buttons button.active {
+    background: #0078d7;
+    color: white;
+}
+.tool-section {
+    margin-top: 10px;
+}
+.tool-section input[type=text], 
+.tool-section input {
+    width: 100%;
+    padding: 6px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+.tool-section ul {
+    list-style: none;
+    padding: 0;
+}
+.tool-section li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 4px 0;
+}
+.tool-section li .done {
+    text-decoration: line-through;
+    color: gray;
 }
