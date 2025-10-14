@@ -1119,47 +1119,6 @@ ul li {
     }
 }
 
-/* #toolbox {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 10000;
-}
-#toolbox-btn {
-    background: #ff6b6b;
-    color: white;
-    padding: 12px;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-#toolbox-panel {
-    position: absolute;
-    bottom: 70px;
-    right: 0;
-    width: 280px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-    padding: 15px;
-    font-size: 14px;
-}
-.tool-section {
-    margin-bottom: 15px;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-}
-.tool-section h4 {
-    margin-bottom: 5px;
-}
-.done {
-    text-decoration: line-through;
-    color: gray;
-}
-.pomo-timer {
-    font-size: 24px;
-    margin: 5px 0;
-} */
 /* 1014-4 new add */
 #toolbox {
     position: fixed;
@@ -1226,4 +1185,63 @@ ul li {
 .tool-section li .done {
     text-decoration: line-through;
     color: gray;
+}
+
+/* 1014-6 new add 悬浮按钮 */
+.fab-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.fab-main {
+  width: 60px;
+  height: 60px;
+  background-color: #ff6b6b;
+  border-radius: 50%;
+  color: white;
+  font-size: 30px;
+  text-align: center;
+  line-height: 60px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.3s;
+}
+
+.fab-main.active {
+  transform: rotate(45deg);
+}
+
+.fab-sub {
+  width: 50px;
+  height: 50px;
+  background-color: #fff;
+  border-radius: 50%;
+  color: #333;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  position: absolute;
+  bottom: 0;
+  right: 5px;
+  opacity: 0;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+/* 展开状态下的动画位置 */
+.fab-container.active .fab-sub:nth-child(2) { /* 番茄时钟 */
+  transform: translateY(-70px);
+  opacity: 1;
+}
+
+.fab-container.active .fab-sub:nth-child(3) { /* 待办集 */
+  transform: translateY(-140px);
+  opacity: 1;
+}
+
+.fab-container.active .fab-sub:nth-child(4) { /* 课表 */
+  transform: translateY(-210px);
+  opacity: 1;
 }
