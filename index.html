@@ -322,7 +322,7 @@
                 <img id="preview-content" ref="previewContent">
             </div>
         </transition>
-        <!-- 工具面板-新增 -->
+        <!-- 工具面板-新增1014-aft -->
         <div id="toolbox" v-cloak>
             <div id="toolbox-btn" @click="showToolbox = !showToolbox">
                 <i class="fa-solid fa-toolbox"></i>
@@ -374,6 +374,91 @@
     <!-- 主要JavaScript文件 -->
     <!-- 主脚本 -->
     <script src="/js/main.js"></script>
+    // 新增
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    showToolbox: false,
+
+                    // 番茄钟
+                    pomoTask: '',
+                    pomoTime: 25 * 60,
+                    pomoRunning: false,
+                    pomoTimer: null,
+
+                    // 备忘录
+                    newTodo: '',
+                    todos: JSON.parse(localStorage.getItem('todos') || '[]'),
+
+                    // 课表（可自定义）
+                    timetable: {
+                        'Monday': [
+                            { time: '08:00', name: '数学' },
+                            { time: '10:00', name: '英语' }
+                        ],
+                        'Tuesday': [
+                            { time: '09:00', name: '物理' },
+                            { time: '14:00', name: '计算机网络' }
+                        ],
+                        // ...其他日期
+                    }
+                }
+            },
+            computed: {
+                pomoTimeDisplay() {
+                    let m = Math.floor(this.pomoTime / 60)
+                    let s = this.pomoTime % 60
+                    return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`
+                },
+                todayCourses() {
+                    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+                    return this.timetable[days[new Date().getDay()]] || []
+                }
+            },
+            methods: {
+                startPomodoro() {
+                    if(this.pomoRunning) return
+                    this.pomoRunning = true
+                    this.pomoTimer = setInterval(() => {
+                        if(this.pomoTime > 0) this.pomoTime--
+                        else {
+                            clearInterval(this.pomoTimer)
+                            alert(`🎉 ${this.pomoTask || '番茄时间'} 完成!`)
+                            this.pomoRunning = false
+                            this.pomoTime = 25 * 60
+                        }
+                    }, 1000)
+                },
+                stopPomodoro() {
+                    clearInterval(this.pomoTimer)
+                    this.pomoRunning = false
+                    this.pomoTime = 25 * 60
+                },
+                addTodo() {
+                    if (!this.newTodo.trim()) return
+                    this.todos.push({ text: this.newTodo.trim(), done: false })
+                    this.newTodo = ''
+                    this.saveTodos()
+                },
+                removeTodo(i) {
+                    this.todos.splice(i, 1)
+                    this.saveTodos()
+                },
+                saveTodos() {
+                    localStorage.setItem('todos', JSON.stringify(this.todos))
+                }
+            },
+            watch: {
+                todos: {
+                    deep: true,
+                    handler() { this.saveTodos() }
+                }
+            }
+        })
+
+        app.mount('#layout')
+    </script>
 
     <!-- 新增功能脚本区域 -->
     <script src="/js/pomodoro.js"></script> <!-- 番茄时钟 -->
@@ -394,18 +479,18 @@
             document.body.append(document.createRange().createContextualFragment(t));
         }
 
-        // === 加载自定义功能组件 ===
-        document.addEventListener("DOMContentLoaded", () => {
-            // 1️⃣ 创建浮动功能按钮
-            const tools = document.createElement("div");
-            tools.id = "site-tools";
-            tools.innerHTML = `
-                <div class="tool-btn" id="pomodoro-btn" title="番茄时钟 🍅"><i class="fa-solid fa-clock"></i></div>
-                <div class="tool-btn" id="timetable-btn" title="课表 🗓️"><i class="fa-solid fa-calendar-days"></i></div>
-                <div class="tool-btn" id="todo-btn" title="待办清单 📝"><i class="fa-solid fa-list-check"></i></div>
-            `;
-            document.body.appendChild(tools);
-        });
+        // // === 加载自定义功能组件 ===
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     // 1️⃣ 创建浮动功能按钮
+        //     const tools = document.createElement("div");
+        //     tools.id = "site-tools";
+        //     tools.innerHTML = `
+        //         <div class="tool-btn" id="pomodoro-btn" title="番茄时钟 🍅"><i class="fa-solid fa-clock"></i></div>
+        //         <div class="tool-btn" id="timetable-btn" title="课表 🗓️"><i class="fa-solid fa-calendar-days"></i></div>
+        //         <div class="tool-btn" id="todo-btn" title="待办清单 📝"><i class="fa-solid fa-list-check"></i></div>
+        //     `;
+        //     document.body.appendChild(tools);
+        // });
     </script>
 
     <!-- 基础样式 -->
