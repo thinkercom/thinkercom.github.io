@@ -2,13 +2,12 @@
 <!-- HTML5文档声明 -->
 <html lang="zh">
 <head>
-
     <meta charset="utf-8">
     <!-- 网页标题-可修改 -->
-    <title>Tinkercom の小窝</title>
+    <title title="星辰满天">Tinkercom の小窝</title>
     <!-- 网页作者信息-可修改 -->
     <meta name="author" content="Thinkercom">
-    <!-- 网页描述信息-可修改 -->
+    <!-- 网页描述信息,不会显示-可修改 -->
     <meta name="description" content="故事开始的地方">
     <!-- 网页关键词-可修改 -->
     <meta name="keywords" content="blog">
@@ -59,6 +58,8 @@
     <!-- RSS订阅 -->
     <link rel="alternate" href="/rss2.xml" title="Thinkercom の小窝" type="application/rss+xml">
 </head>
+
+
 <body>
     <!-- 主要布局容器 -->
     <div id="layout">
@@ -515,6 +516,63 @@
         .tool-btn:hover {
             background: #ff7d73;
             transform: scale(1.1);
+        }
+        
+        /* 添加调试样式，确保工具箱可见 */
+        #toolbox {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+        }
+        
+        #toolbox-btn {
+            background: #0078d7;
+            color: #fff;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+        }
+        
+        #toolbox-panel {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 260px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+            padding: 15px;
+        }
+        
+        /* 确保tab-buttons可见 */
+        .tab-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 10px;
+            border: 2px solid red; /* 调试用边框 */
+        }
+        
+        .tab-buttons button {
+            background: none;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 5px 10px;
+            cursor: pointer;
+            flex: 1;
+            margin: 0 2px;
+        }
+        
+        .tab-buttons button.active {
+            background: #0078d7;
+            color: white;
         }
     </style>
 </body>
