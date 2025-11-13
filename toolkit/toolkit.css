@@ -1,0 +1,154 @@
+/* body {
+    font-family: "Microsoft YaHei", sans-serif;
+    background: #f5f6fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+} */
+
+.toolkit-container {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 99999999; /* 确保最上层 */
+}
+
+.toolkit-icon {
+    font-size: 3rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    pointer-events: auto;
+}
+
+.toolkit-icon:hover {
+    transform: scale(1.1);
+}
+
+.circle-buttons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* pointer-events: none; */
+    pointer-events: auto;
+}
+
+.circle-btn {
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: none;
+    font-size: 1.5rem;
+    background: white;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translate(0, 0) scale(0);
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* 收纳的图标 */
+.toolkit-icon {
+    width: 60px; /* 明确设置宽度 */
+    height: 60px; /* 明确设置高度 */
+    background-image: url('../images/写轮眼动图.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 50%; /* 关键：设置为圆形 */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#pomodoro{
+    width: 60px; /* 明确设置宽度 */
+    height: 60px; /* 明确设置高度 */
+    background-image: url('../images/番茄钟.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 50%; /* 关键：设置为圆形 */
+    cursor: pointer;
+    /* transition: transform 0.2s ease; */
+}
+
+#todo{
+    width: 60px; /* 明确设置宽度 */
+    height: 60px; /* 明确设置高度 */
+    background-image: url('../images/待办计划动图.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 50%; /* 关键：设置为圆形 */
+    cursor: pointer;
+    /* transition: transform 0.2s ease; */
+}
+
+#favorite{
+    width: 60px; /* 明确设置宽度 */
+    height: 60px; /* 明确设置高度 */
+    background-image: url('../images/收藏.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 50%; /* 关键：设置为圆形 */
+    cursor: pointer;
+    /* transition: transform 0.2s ease; */
+}
+
+/* 待办集 */
+#todo-panel {
+    position: fixed;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    border-radius: 12px 12px 0 0;
+    transition: all 0.4s ease;
+    z-index: 9999;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+
+.todo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#close-todo {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#todo-input {
+    flex: 1;
+    margin: 10px 0;
+    padding: 8px;
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+#save-todo {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#save-todo:hover {
+    background-color: #45a049;
+}
+
+#todo-status {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #777;
+}

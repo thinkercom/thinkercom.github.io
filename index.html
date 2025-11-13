@@ -43,19 +43,22 @@
     <script src="/js/lib/math.js"></script>
 
     <script src="/js/lib/preview.js"></script>
-    <!-- 主页功能脚本 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <link rel="stylesheet" href="toolkit/toolkit.css">
+    <script src="toolkit/toolkit.js"></script>
+    
     <script src="/js/lib/home.js"></script>
-    <!-- 引入Anime.js动画库 -->
+
     <script src="https://s4.zstatic.net/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <!-- 主样式表 -->
+
     <link rel="stylesheet" href="/css/main.css">
-    <!-- 预连接到静态资源服务器 -->
+
     <link rel="preconnect" href="https://static-argvchs.netlify.app">
-    <!-- 网站生成器信息 -->
+
     <meta name="generator" content="Hexo 7.3.0">
-    <!-- Atom订阅 -->
+
     <link rel="alternate" href="/atom.xml" title="Thinkercom の小窝" type="application/atom+xml">
-    <!-- RSS订阅 -->
+
     <link rel="alternate" href="/rss2.xml" title="Thinkercom の小窝" type="application/rss+xml">
 </head>
 
@@ -117,7 +120,7 @@
                                 <div style="min-width:100px;max-width:150%;width:20%">Home</div>
                             </div>
                         </a>
-                        <a href="/about">
+                        <a href="/about" title="访问 Example 网站">
                             <div class="item">
                                 <div style="min-width:20px;max-width:50px;width:10%">
                                     <i class="fa-solid fa-id-card fa-fw"></i>
@@ -151,7 +154,19 @@
                         </a>
                     </div>
                 </transition>
-            </nav>            
+            </nav> 
+            <!-- 弹簧工具包 -->
+            <div class="toolkit-container">
+                <!-- 在CSS中定义图标 -->
+                <div id="toolkit-btn" class="toolkit-icon"></div>
+                <div class="circle-buttons">
+                    <button class="circle-btn" id="pomodoro" title="番茄钟"></button>
+                    <button class="circle-btn" id="todo" title="待办集"></button>
+                    <button class="circle-btn" id="favorite" title="收藏夹"></button>
+                </div>
+            </div>
+
+            
         </div>
         <!-- 菜单幕布，用于移动端点击关闭菜单 -->
         <transition name="fade">
@@ -213,6 +228,7 @@
                                 </p>
                             </div>
                         </div>
+                        
                         <div class="post-tags">
                             <span class="icon">
                                 <i class="fa-solid fa-tags fa-fw"></i>
@@ -320,159 +336,11 @@
                 <img id="preview-content" ref="previewContent">
             </div>
         </transition>
-        <!-- 工具面板-新增1014-aft -->
-        <div id="toolbox" v-cloak>
-    <div id="toolbox-btn" @click="showToolbox = !showToolbox">
-        <i class="fa-solid fa-toolbox"></i>
     </div>
+    
 
-    <transition name="fade">
-        <div id="toolbox-panel" v-show="showToolbox">
-            <h3>生活工具箱</h3>
-
-            <!-- 标签切换 -->
-            <div class="tab-buttons">
-                <button :class="{active: activeTab === 'todo'}" @click="switchTab('todo')">备忘录</button>
-                <button :class="{active: activeTab === 'pomo'}" @click="switchTab('pomo')">番茄钟</button>
-                <button :class="{active: activeTab === 'course'}" @click="switchTab('course')">课表</button>
-            </div>
-
-            <!-- 番茄钟 -->
-            <div v-show="activeTab === 'pomo'" class="tool-section">
-                <input v-model="pomoTask" placeholder="任务名称">
-                <div class="pomo-timer">{{ pomoTimeDisplay }}</div>
-                <button @click="startPomodoro">开始</button>
-                <button @click="stopPomodoro">停止</button>
-            </div>
-
-            <!-- 待办列表 -->
-            <div v-show="activeTab === 'todo'" class="tool-section">
-                <input v-model="newTodo" placeholder="添加任务..." @keyup.enter="addTodo">
-                <ul>
-                    <li v-for="(todo, index) in todos" :key="index">
-                        <input type="checkbox" v-model="todo.done">
-                        <span :class="{done: todo.done}">{{ todo.text }}</span>
-                        <i class="fa-solid fa-trash" @click="removeTodo(index)"></i>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- 课表 -->
-            <div v-show="activeTab === 'course'" class="tool-section">
-                <ul>
-                    <li v-for="(course, index) in todayCourses" :key="index">
-                        {{ course.time }} - {{ course.name }}
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </transition>
-</div>
     <!-- 主要JavaScript文件 -->
     <script src="/js/main.js"></script>
-    <!-- 1014-4 new add -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const toolboxApp = Vue.createApp({
-                data() {
-                    return {
-                        showToolbox: false,
-                        activeTab: 'todo',
-
-                        // 番茄钟
-                        pomoTask: '',
-                        pomoTime: 25 * 60,
-                        pomoRunning: false,
-                        pomoTimer: null,
-
-                        // 待办
-                        newTodo: '',
-                        todos: JSON.parse(localStorage.getItem('todos') || '[]'),
-
-                        // 课表
-                        timetable: {
-                            'Monday': [
-                                { time: '08:00', name: '数学' },
-                                { time: '10:00', name: '英语' }
-                            ],
-                            'Tuesday': [
-                                { time: '09:00', name: '物理' },
-                                { time: '14:00', name: '计算机网络' }
-                            ]
-                        }
-                    }
-                },
-                computed: {
-                    pomoTimeDisplay() {
-                        const m = Math.floor(this.pomoTime / 60)
-                        const s = this.pomoTime % 60
-                        return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
-                    },
-                    todayCourses() {
-                        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
-                        return this.timetable[days[new Date().getDay()]] || []
-                    }
-                },
-                methods: {
-                    // -------- 番茄钟 --------
-                    startPomodoro() {
-                        if (this.pomoRunning) return
-                        this.pomoRunning = true
-                        this.pomoTimer = setInterval(() => {
-                            if (this.pomoTime > 0) this.pomoTime--
-                            else {
-                                clearInterval(this.pomoTimer)
-                                alert(`🎉 ${this.pomoTask || '番茄时间'} 完成!`)
-                                this.pomoRunning = false
-                                this.pomoTime = 25 * 60
-                            }
-                        }, 1000)
-                    },
-                    stopPomodoro() {
-                        clearInterval(this.pomoTimer)
-                        this.pomoRunning = false
-                        this.pomoTime = 25 * 60
-                    },
-
-                    // -------- 待办 --------
-                    addTodo() {
-                        if (!this.newTodo.trim()) return
-                        this.todos.push({ text: this.newTodo.trim(), done: false })
-                        this.newTodo = ''
-                        this.saveTodos()
-                    },
-                    removeTodo(i) {
-                        this.todos.splice(i, 1)
-                        this.saveTodos()
-                    },
-                    saveTodos() {
-                        localStorage.setItem('todos', JSON.stringify(this.todos))
-                    },
-
-                    // -------- 标签切换 --------
-                    switchTab(tab) {
-                        this.activeTab = tab
-                    }
-                },
-                watch: {
-                    todos: {
-                        deep: true,
-                        handler() { this.saveTodos() }
-                    }
-                }
-            })
-
-            toolboxApp.mount('#toolbox')
-        })
-    </script>
-
-
-
-    <!-- 新增功能脚本区域 -->
-    <script src="/js/pomodoro.js"></script> <!-- 番茄时钟 -->
-    <script src="/js/timetable.js"></script> <!-- 课表 -->
-    <script src="/js/todo.js"></script> <!-- 备忘录/待办 -->
-
     <!-- 烟花特效（仅在非触摸设备上显示） -->
     <script>
         console.log("Welcome to Thinkercom's blog!");
@@ -489,91 +357,5 @@
 
     </script>
 
-    <!-- 基础样式 -->
-    <style>
-        #site-tools {
-            position: fixed;
-            right: 20px;
-            bottom: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 99999;
-        }
-        .tool-btn {
-            background: #2b2b2b;
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .tool-btn:hover {
-            background: #ff7d73;
-            transform: scale(1.1);
-        }
-        
-        /* 添加调试样式，确保工具箱可见 */
-        #toolbox {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 2000;
-        }
-        
-        #toolbox-btn {
-            background: #0078d7;
-            color: #fff;
-            padding: 12px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-        }
-        
-        #toolbox-panel {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            width: 260px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-            padding: 15px;
-        }
-        
-        /* 确保tab-buttons可见 */
-        .tab-buttons {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 10px;
-            border: 2px solid red; /* 调试用边框 */
-        }
-        
-        .tab-buttons button {
-            background: none;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            padding: 5px 10px;
-            cursor: pointer;
-            flex: 1;
-            margin: 0 2px;
-        }
-        
-        .tab-buttons button.active {
-            background: #0078d7;
-            color: white;
-        }
-    </style>
 </body>
 </html>
