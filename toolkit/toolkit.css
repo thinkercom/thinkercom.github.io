@@ -1,30 +1,20 @@
-/* body {
-    font-family: "Microsoft YaHei", sans-serif;
-    background: #f5f6fa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-} */
-
+/* 按钮的容器 */
 .toolkit-container {
     position: fixed;
-    right: 20px;
+    right: 20px; /* 据右侧20pixel距离 */
     bottom: 20px;
-    z-index: 99999999; /* 确保最上层 */
 }
 
 .toolkit-icon {
-    font-size: 3rem;
     cursor: pointer;
     transition: transform 0.2s ease;
     pointer-events: auto;
 }
-
+/* 鼠标悬停时放大图标 */
 .toolkit-icon:hover {
     transform: scale(1.1);
 }
-
+/* =========弹出的按钮========== */
 .circle-buttons {
     position: absolute;
     top: 50%;
@@ -53,7 +43,7 @@
 .toolkit-icon {
     width: 60px; /* 明确设置宽度 */
     height: 60px; /* 明确设置高度 */
-    background-image: url('../images/写轮眼动图.gif');
+    background-image: url('../images/toolkit.gif');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -98,57 +88,298 @@
     /* transition: transform 0.2s ease; */
 }
 
-/* 待办集 */
+
 #todo-panel {
     position: fixed;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    border-radius: 12px 12px 0 0;
-    transition: all 0.4s ease;
+    bottom: 20px;              /* 总是靠底部 */
+    right: 0px;
+    /* transform: translateX(-50%); */
+    width: 90%;                /* 宽 */
+    max-width: 600px;          /* 最大宽度 */
+    background: linear-gradient(90deg, #ffb347, #ffcc33);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     z-index: 9999;
-    overflow: hidden;
+
+    opacity: 0;
+    pointer-events: none;      /* 隐藏时不互动 */
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+    background: linear-gradient(90deg, #ffb347, #ffcc33);
+    padding: 10px 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    justify-content: space-between;
+    color: #fff;
+    font-size: 16px;
+}
+
+.todo-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.todo-clock-btn {
+    background: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #ff7f50;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.todo-clock-btn:hover {
+    background: #ffe2d4;
+}
+
+#todo-list {
     display: flex;
     flex-direction: column;
-    padding: 16px;
+    gap: 10px;
+    padding: 15px;
 }
 
-.todo-header {
+
+.todo-left {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 12px;
 }
 
-#close-todo {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
+.todo-check {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #aaa;
+    border-radius: 50%;
+}
+
+.todo-text .todo-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgb(0, 0, 0);
+}
+
+/* 下面的任务文字 */
+.todo-text .todo-desc {
+    font-size: 12px;
+    color: #bd1212;
+}
+
+.todo-add-area {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    position: sticky;
+    top: 0;
+    background: linear-gradient(to right, #ffa500, #ffcf5d);
+    z-index: 10;
 }
 
 #todo-input {
     flex: 1;
-    margin: 10px 0;
-    padding: 8px;
-    resize: none;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
 }
 
-#save-todo {
-    background-color: #4CAF50;
-    color: white;
+#add-todo-btn {
+    padding: 0 16px;
+    font-size: 20px;
+    border-radius: 10px;
     border: none;
-    padding: 8px;
-    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+    transition: .2s;
+}
+
+#add-todo-btn:hover {
+    background: #f1f1f1;
+    scale: 1.1;
+}
+
+.circle {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #999;
+    cursor: pointer;
+    position: relative;
+    transition: .2s;
+}
+
+.todo-item.done .circle {
+    background: #4caf50;
+    border-color: #4caf50;
+}
+
+.todo-item.done .circle::after {
+    content: "✔";
+    color: white;
+    font-size: 14px;
+    position: absolute;
+    left: 3px;
+    top: -1px;
+}
+
+.todo-item.done .todo-text {
+    text-decoration: line-through;
+    color: #aaa;
+}
+
+.del-btn {
+    /* right: 2px; */
+    margin-left: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.history-title {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
 }
 
-#save-todo:hover {
-    background-color: #45a049;
+.history-box.hidden {
+    display: none;
 }
 
-#todo-status {
-    margin-top: 8px;
-    font-size: 13px;
-    color: #777;
+/* 待办面板自动适应 + 达到6条后启用滚动 */
+#todo-panel {
+    max-height: 70vh;   /* 最大高度，防止超出屏幕 */
+    overflow: hidden;   /* 默认不滚动 */
+    transition: max-height .25s ease;
+}
+
+/* 任务区 */
+#todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+
+    /* ✨ 限制高度为6个任务 */
+    max-height: calc(6 * 70px); /* 每个大约 70px，可微调 */
+
+    overflow-y: auto;  /* 超过时自动滚动 */
+}
+
+/* 删除按钮 */
+.todo-delete {
+    /* right:2px; */
+    background: none;
+    border: none;
+    color: #ff4444;
+    font-size: 22px;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.todo-delete:hover {
+    transform: scale(1.2);
+}
+
+/* 跳转到番茄钟的按钮 */
+.goto-pomodoro-btn {
+    width: 120px;
+    padding: 6px 12px;
+    margin: 10px auto;
+    display: block;
+    border: none;
+    border-radius: 12px;
+    background: #ff7043;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.goto-pomodoro-btn:hover {
+    background: #ff5722;
+    transform: scale(1.05);
+}
+
+.mail-btn{
+    width: 120px;
+    padding: 6px 12px;
+    margin: 10px auto;
+    display: block;
+    border: none;
+    border-radius: 12px;
+    background: #42a5f5;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+/* #todo-list .mail-btn {
+    width: 20px;
+    padding: 6px 12px;
+    margin: 10px auto;
+    display: block;
+    border: none;
+    border-radius: 12px;
+    background: #42a5f5;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+#todo-list .mail-btn:hover {
+    background: #1e88e5;
+    transform: translateY(-2px);
+} */
+
+.todo-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto; /* 将操作按钮移到右侧 */
+}
+
+.todo-actions .mail-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0;
+    color: #fff;
+}
+
+.todo-actions .mail-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.todo-actions .todo-delete {
+    background: none;
+    border: none;
+    color: #ff4444;
+    font-size: 22px;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.todo-actions .todo-delete:hover {
+    transform: scale(1.2);
 }

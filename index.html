@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- HTML5文档声明 -->
+
 <html lang="zh">
 <head>
     <meta charset="utf-8">
@@ -43,14 +43,13 @@
     <script src="/js/lib/math.js"></script>
 
     <script src="/js/lib/preview.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <link rel="stylesheet" href="toolkit/toolkit.css">
-    <script src="toolkit/toolkit.js"></script>
     
-    <script src="/js/lib/home.js"></script>
-
+    
     <script src="https://s4.zstatic.net/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
+    <script src="/js/lib/home.js"></script>
+
+    
     <link rel="stylesheet" href="/css/main.css">
 
     <link rel="preconnect" href="https://static-argvchs.netlify.app">
@@ -60,6 +59,7 @@
     <link rel="alternate" href="/atom.xml" title="Thinkercom の小窝" type="application/atom+xml">
 
     <link rel="alternate" href="/rss2.xml" title="Thinkercom の小窝" type="application/rss+xml">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 
 
@@ -155,18 +155,6 @@
                     </div>
                 </transition>
             </nav> 
-            <!-- 弹簧工具包 -->
-            <div class="toolkit-container">
-                <!-- 在CSS中定义图标 -->
-                <div id="toolkit-btn" class="toolkit-icon"></div>
-                <div class="circle-buttons">
-                    <button class="circle-btn" id="pomodoro" title="番茄钟"></button>
-                    <button class="circle-btn" id="todo" title="待办集"></button>
-                    <button class="circle-btn" id="favorite" title="收藏夹"></button>
-                </div>
-            </div>
-
-            
         </div>
         <!-- 菜单幕布，用于移动端点击关闭菜单 -->
         <transition name="fade">
@@ -177,7 +165,8 @@
             <!-- 首页头部 -->
             <div id="home-head">
                 <!-- 首页背景图片-可修改 -->
-                <div id="home-background" ref="homeBackground" data-images="https://i.imgur.com/5sBySSU.jpeg" data-mobile-images="https://i.imgur.com/ZbEsxYd.jpeg"></div>
+                <!-- <div id="home-background" ref="homeBackground" data-images="https://i.imgur.com/5sBySSU.jpeg" data-mobile-images="https://i.imgur.com/ZbEsxYd.jpeg"></div> -->
+                <div id="home-background" ref="homeBackground" data-images="./images/bg_home.png" data-mobile-images="./images/bg2_home.jpeg"></div>
                 <!-- 首页信息 -->
                 <div id="home-info" @click="homeClick">
                     <span class="loop"></span>
@@ -271,7 +260,7 @@
                             <div class="name">Thinkercom</div>
                             <!-- 个人简介-可修改 -->
                             <div class="description">
-                                <p>Here's an Thinkercom...</p>
+                                <p>Humble but confident...</p>
                             </div>
                             <!-- 社交链接-可修改 -->
                             <div class="icon-links">
@@ -356,6 +345,33 @@
         }
 
     </script>
+    <!-- 弹簧工具包 -->
+    <div class="toolkit-container">
+        <!-- 在CSS中定义图标 -->
+        <div id="toolkit-btn" class="toolkit-icon"></div>
+        <div class="circle-buttons">
+            <button class="circle-btn" id="pomodoro" title="番茄钟"></button>
+            <button class="circle-btn" id="todo" title="待办集"></button>
+            <button class="circle-btn" id="favorite" title="收藏夹"></button>
+        </div>
+    </div>
 
+    <!-- 待办面板 -->
+    <div id="todo-panel">
+        <button id="todo-close" class="close-btn">✕</button>
+        <div class="todo-wrapper">
+            <h3 class="todo-title">待办事项</h3>
+            <div class="todo-add-area">
+                <input id="todo-input" type="text" placeholder="输入任务..." />
+                <button id="add-todo-btn">＋</button>
+            </div>
+        </div>        
+        <div id="todo-list">
+            <!-- JS 自动生成任务 -->
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <link rel="stylesheet" href="toolkit/toolkit.css">
+    <script src="toolkit/toolkit.js"></script>
 </body>
 </html>
