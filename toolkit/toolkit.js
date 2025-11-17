@@ -106,7 +106,7 @@ const positions = [
         case 0:
           console.log("左上按钮：打开番茄钟页面（当前窗口）");
           // 打开本地页面（当前窗口），确保路径正确
-          window.location.href = "./clock/index.html";
+          window.location.href = "./fsit05-pomodoro-clock/index.html";
           break;
 
         case 1:
