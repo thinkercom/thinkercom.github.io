@@ -8,7 +8,7 @@
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
     <!-- 更改网页图标 -->
-    <link rel="icon" href="https://www.huoyingahz.com/d/file/content/2021/03/60542c4411ba0.jpg">
+    <link rel="icon" href="../../images/photo.jpg">
     <link rel="preconnect" href="https://s4.zstatic.net">
     <script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
     <link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -127,7 +127,7 @@
         </transition>
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div id="home-head">
-                <div id="home-background" ref="homeBackground" data-images="https://static-argvchs.netlify.app/images/background.jpg"></div>
+                <div id="home-background" ref="homeBackground" data-images="../../images/bg_home.png" data-mobile-images="../../images/bg2_home.jpeg"></div>
                 <div id="home-info" @click="homeClick">
                     <span class="loop"></span>
                     <span class="loop"></span>
@@ -516,16 +516,17 @@
                 <div id="home-card">
                     <div id="card-style">
                         <div id="card-div">
+                            
                             <div class="avatar">
-                                <img src="https://static-argvchs.netlify.app/images/avatar.jpg" alt="avatar">
+                                <img src="../../images/photo.jpg" alt="avatar" description="头像图片-可修改">
                             </div>
-                            <div class="name">Argvchs</div>
+                            <div class="name">Thinkercom</div>
                             <div class="description">
-                                <p>Here's an argvchs...</p>
+                                <p>Le vent se lève, il faut tenter de vivre..</p>
                             </div>
                             <div class="icon-links">
                                 <span class="icon-link">
-                                    <a target="_blank" rel="noopener" href="https://github.com/argvchs">
+                                    <a target="_blank" rel="noopener" href="https://github.com/thinkercom">
                                         <i class="fa-brands fa-github fa-fw"></i>
                                     </a>
                                 </span>
@@ -535,7 +536,7 @@
                                     </a>
                                 </span>
                                 <span class="icon-link">
-                                    <a target="_blank" rel="noopener" href="https://twitter.com/argvchs">
+                                    <a target="_blank" rel="noopener" href="https://twitter.com/mountchentry">
                                         <i class="fa-brands fa-twitter fa-fw"></i>
                                     </a>
                                 </span>
